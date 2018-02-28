@@ -8,38 +8,37 @@
 namespace Spryker\Zed\CompanyRole\Persistence;
 
 use Generated\Shared\Transfer\CompanyRoleTransfer;
+use Generated\Shared\Transfer\CompanyUserTransfer;
 
-interface CompanyRoleWriterRepositoryInterface
+interface CompanyRoleEntityManagerInterface
 {
     /**
-     * Specification:
-     * - Creates a company role
-     * - Finds a company by CompanyRoleTransfer::idCompanyRole in the transfer
-     * - Updates fields in a company role entity
-     *
      * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyRoleTransfer
      */
-    public function save(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleTransfer;
+    public function saveCompanyRole(
+        CompanyRoleTransfer $companyRoleTransfer
+    ): CompanyRoleTransfer;
 
     /**
-     * Specification:
-     * - Deletes a company role
-     *
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
+     * @param int $idCompanyRole
      *
      * @return void
      */
-    public function delete(CompanyRoleTransfer $companyRoleTransfer): void;
+    public function deleteCompanyRoleById(int $idCompanyRole): void;
 
     /**
-     * Specification:
-     * - Creates/updates related to a company role permissions
-     *
      * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
      *
      * @return void
      */
     public function saveCompanyRolePermissions(CompanyRoleTransfer $companyRoleTransfer): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
+     *
+     * @return void
+     */
+    public function saveCompanyUser(CompanyUserTransfer $companyUserTransfer): void;
 }
