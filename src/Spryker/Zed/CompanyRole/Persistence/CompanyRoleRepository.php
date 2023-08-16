@@ -25,6 +25,11 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRepositoryInterface
 {
     /**
+     * @var array <string, \Generated\Shared\Transfer\CompanyRoleCollectionTransfer>
+     */
+    protected static array $companyRoleCache = [];
+    
+    /**
      * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyRoleTransfer
@@ -214,6 +219,7 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
             ->toArray();
     }
 
+
     /**
      * @param \Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
      *
@@ -222,6 +228,12 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
     public function getCompanyRoleCollection(
         CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
     ): CompanyRoleCollectionTransfer {
+        $cacheKey = sha1(serialize($companyRoleCriteriaFilterTransfer->toArray(false, true)));
+
+        if (isset(static::$companyRoleCache[$cacheKey])) {
+            return static::$companyRoleCache[$cacheKey];
+        }
+
         $query = $this->getFactory()
             ->createCompanyRoleQuery();
 
@@ -236,18 +248,19 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         }
 
         $collection = $this->buildQueryFromCriteria($query, $companyRoleCriteriaFilterTransfer->getFilter());
-        /** @var array<\Orm\Zed\CompanyRole\Persistence\SpyCompanyRole> $spyCompanyRoleCollection */
+        /** @var \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole[] $spyCompanyRoleCollection */
         $spyCompanyRoleCollection = $this->getPaginatedCollection($collection, $companyRoleCriteriaFilterTransfer->getPagination());
 
         $collectionTransfer = new CompanyRoleCollectionTransfer();
         foreach ($spyCompanyRoleCollection as $spyCompanyRole) {
-            $companyRoleTransfer = $this->prepareCompanyRoleTransfer($spyCompanyRole);
+            $companyRoleTransfer = $this->prepareCompanyRoleTransferWithoutRecursiveUser($spyCompanyRole);
             $collectionTransfer->addRole($companyRoleTransfer);
         }
 
         $collectionTransfer->setPagination($companyRoleCriteriaFilterTransfer->getPagination());
+        static::$companyRoleCache[$cacheKey] = $collectionTransfer;
 
-        return $collectionTransfer;
+        return static::$companyRoleCache[$cacheKey];
     }
 
     /**
@@ -428,5 +441,36 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         }
 
         return $this->prepareCompanyRoleTransfer($companyRoleEntity);
+    }
+
+    /**
+     * @param \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole $spyCompanyRole
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
+     */
+    protected function prepareCompanyRoleTransferWithoutRecursiveUser(SpyCompanyRole $spyCompanyRole): CompanyRoleTransfer
+    {
+        $companyRoleTransfer = $this->getFactory()
+            ->createCompanyRoleMapper()
+            ->mapEntityToCompanyRoleTransfer(
+                $spyCompanyRole,
+                new CompanyRoleTransfer()
+            );
+
+        $companyRoleTransfer = $this->getFactory()
+            ->createCompanyRolePermissionMapper()
+            ->hydratePermissionCollection(
+                $spyCompanyRole,
+                $companyRoleTransfer
+            );
+
+        $companyRoleTransfer = $this->getFactory()
+            ->createCompanyRoleCompanyMapper()
+            ->mapCompanyFromCompanyRoleEntityToCompanyRoleTransfer(
+                $spyCompanyRole,
+                $companyRoleTransfer
+            );
+
+        return $companyRoleTransfer;
     }
 }
