@@ -37,6 +37,7 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
             $this->createCompanyRolePermissionWriter(),
             $this->getConfig(),
             $this->getPermissionFacade(),
+            $this->getCompanyRolePostSavePlugins(),
         );
     }
 
@@ -73,5 +74,13 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
     public function getPermissionFacade(): CompanyRoleToPermissionFacadeInterface
     {
         return $this->getProvidedDependency(CompanyRoleDependencyProvider::FACADE_PERMISSION);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\CompanyRoleExtension\Dependency\Plugin\CompanyRolePostSavePluginInterface>
+     */
+    public function getCompanyRolePostSavePlugins(): array
+    {
+        return $this->getProvidedDependency(CompanyRoleDependencyProvider::PLUGINS_COMPANY_ROLE_POST_SAVE);
     }
 }

@@ -31,49 +31,21 @@ class CompanyRole implements CompanyRoleInterface
     protected const ERROR_MESSAGE_HAS_RELATED_USERS = 'company.company_role.delete.error.has_users';
 
     /**
-     * @var \Spryker\Zed\CompanyRole\Persistence\CompanyRoleRepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * @var \Spryker\Zed\CompanyRole\Persistence\CompanyRoleEntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var \Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionWriterInterface
-     */
-    protected $permissionWriter;
-
-    /**
-     * @var \Spryker\Zed\CompanyRole\CompanyRoleConfig
-     */
-    protected $companyRoleConfig;
-
-    /**
-     * @var \Spryker\Zed\CompanyRole\Dependency\Facade\CompanyRoleToPermissionFacadeInterface
-     */
-    protected $permissionFacade;
-
-    /**
      * @param \Spryker\Zed\CompanyRole\Persistence\CompanyRoleRepositoryInterface $repository
      * @param \Spryker\Zed\CompanyRole\Persistence\CompanyRoleEntityManagerInterface $entityManager
      * @param \Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionWriterInterface $permissionWriter
      * @param \Spryker\Zed\CompanyRole\CompanyRoleConfig $companyRoleConfig
      * @param \Spryker\Zed\CompanyRole\Dependency\Facade\CompanyRoleToPermissionFacadeInterface $permissionFacade
+     * @param array<\Spryker\Zed\CompanyRoleExtension\Dependency\Plugin\CompanyRolePostSavePluginInterface> $companyRolePostSavePlugins
      */
     public function __construct(
-        CompanyRoleRepositoryInterface $repository,
-        CompanyRoleEntityManagerInterface $entityManager,
-        CompanyRolePermissionWriterInterface $permissionWriter,
-        CompanyRoleConfig $companyRoleConfig,
-        CompanyRoleToPermissionFacadeInterface $permissionFacade
+        protected CompanyRoleRepositoryInterface $repository,
+        protected CompanyRoleEntityManagerInterface $entityManager,
+        protected CompanyRolePermissionWriterInterface $permissionWriter,
+        protected CompanyRoleConfig $companyRoleConfig,
+        protected CompanyRoleToPermissionFacadeInterface $permissionFacade,
+        protected array $companyRolePostSavePlugins
     ) {
-        $this->repository = $repository;
-        $this->entityManager = $entityManager;
-        $this->permissionWriter = $permissionWriter;
-        $this->companyRoleConfig = $companyRoleConfig;
-        $this->permissionFacade = $permissionFacade;
     }
 
     /**
@@ -321,8 +293,22 @@ class CompanyRole implements CompanyRoleInterface
 
         $this->permissionWriter->saveCompanyRolePermissions($companyRoleTransfer);
 
+        $companyRoleTransfer = $this->executeCompanyRolePostSavePlugins($companyRoleTransfer);
+
         return (new CompanyRoleResponseTransfer())
             ->setIsSuccessful(true)
             ->setCompanyRoleTransfer($companyRoleTransfer);
+    }
+
+    protected function executeCompanyRolePostSavePlugins(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleTransfer
+    {
+        if ($this->companyRolePostSavePlugins) {
+            $companyRoleTransfer = $this->repository->getCompanyRoleById($companyRoleTransfer);
+        }
+        foreach ($this->companyRolePostSavePlugins as $companyRolePostSavePlugin) {
+            $companyRoleTransfer = $companyRolePostSavePlugin->postSave($companyRoleTransfer);
+        }
+
+        return $companyRoleTransfer;
     }
 }
