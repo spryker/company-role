@@ -251,4 +251,17 @@ interface CompanyRoleFacadeInterface
      * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
      */
     public function findCompanyRoleByUuid(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
+
+    /**
+     * Specification:
+     * - Retrieves company role names grouped by company user IDs.
+     * - Fetches data in bulk for performance optimization.
+     *
+     * @api
+     *
+     * @param list<int> $companyUserIds
+     *
+     * @return array<int, list<string>>
+     */
+    public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array;
 }

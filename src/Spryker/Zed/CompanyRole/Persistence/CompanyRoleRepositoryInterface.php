@@ -100,4 +100,11 @@ interface CompanyRoleRepositoryInterface
      * @return \Generated\Shared\Transfer\CompanyRoleTransfer|null
      */
     public function findCompanyRoleByUuid(string $companyRoleUuid): ?CompanyRoleTransfer;
+
+    /**
+     * @param list<int> $companyUserIds
+     *
+     * @return array<int, list<string>>
+     */
+    public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array;
 }

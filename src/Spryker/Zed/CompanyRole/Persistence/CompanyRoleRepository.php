@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\FilterTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
 use Generated\Shared\Transfer\PermissionCollectionTransfer;
 use Generated\Shared\Transfer\PermissionTransfer;
+use Orm\Zed\CompanyRole\Persistence\Map\SpyCompanyRoleTableMap;
 use Orm\Zed\CompanyRole\Persistence\Map\SpyCompanyRoleToCompanyUserTableMap;
 use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -24,6 +25,11 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
  */
 class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRepositoryInterface
 {
+    /**
+     * @see \Orm\Zed\CompanyRole\Persistence\Map\SpyCompanyRoleToCompanyUserTableMap::COL_FK_COMPANY_USER
+     */
+    protected const string COL_FK_COMPANY_USER = 'spy_company_role_to_company_user.fk_company_user';
+
     /**
      * @var array<string, \Generated\Shared\Transfer\CompanyRoleCollectionTransfer>
      */
@@ -442,6 +448,40 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         }
 
         return $this->prepareCompanyRoleTransfer($companyRoleEntity);
+    }
+
+    /**
+     * @param list<int> $companyUserIds
+     *
+     * @return array<int, list<string>>
+     */
+    public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array
+    {
+        if ($companyUserIds === []) {
+            return [];
+        }
+
+        $query = $this->getFactory()->createCompanyRoleQuery();
+
+        $results = $query
+            ->joinSpyCompanyRoleToCompanyUser()
+            ->useSpyCompanyRoleToCompanyUserQuery()
+                ->filterByFkCompanyUser_In($companyUserIds)
+            ->endUse()
+            ->select([
+                SpyCompanyRoleTableMap::COL_NAME,
+                static::COL_FK_COMPANY_USER,
+            ])
+            ->find();
+
+        $groupedRoles = [];
+
+        foreach ($results as $result) {
+            $groupedRoles[$result[static::COL_FK_COMPANY_USER]] ??= [];
+            $groupedRoles[$result[static::COL_FK_COMPANY_USER]][] = $result[SpyCompanyRoleTableMap::COL_NAME];
+        }
+
+        return $groupedRoles;
     }
 
     /**

@@ -298,4 +298,18 @@ class CompanyRoleFacade extends AbstractFacade implements CompanyRoleFacadeInter
     {
         return $this->getFactory()->createCompanyRoleReader()->findCompanyRoleByUuid($companyRoleTransfer);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param list<int> $companyUserIds
+     *
+     * @return array<int, list<string>>
+     */
+    public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array
+    {
+        return $this->getRepository()->getCompanyRoleNamesGroupedByCompanyUserIds($companyUserIds);
+    }
 }
