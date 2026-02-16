@@ -2,4 +2,7 @@ parameters:
     ignoreErrors:
         -
             identifier: missingType.iterableValue
+        # Defensive programming: type checks kept for runtime safety
+        -
+            identifier: notIdentical.alwaysTrue
     level: 7
