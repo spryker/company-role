@@ -21,11 +21,6 @@ class CompanyRoleHelper extends Module
 {
     use LocatorHelperTrait;
 
-    /**
-     * @param array $companyRole
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function haveCompanyRole(array $companyRole = []): CompanyRoleTransfer
     {
         $companyRoleTransfer = (new CompanyRoleBuilder($companyRole))->build();
@@ -56,11 +51,6 @@ class CompanyRoleHelper extends Module
             ->getCompanyRoleTransfer();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return void
-     */
     public function assignCompanyRolesToCompanyUser(CompanyUserTransfer $companyUserTransfer): void
     {
         $companyUserTransfer->requireCompanyRoleCollection();
@@ -83,9 +73,6 @@ class CompanyRoleHelper extends Module
         $this->assignCompanyRolesToCompanyUser($companyUserTransfer);
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Business\CompanyRoleFacadeInterface
-     */
     protected function getCompanyRoleFacade(): CompanyRoleFacadeInterface
     {
         return $this->getLocator()->companyRole()->facade();

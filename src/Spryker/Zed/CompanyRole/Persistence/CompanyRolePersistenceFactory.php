@@ -26,57 +26,36 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
  */
 class CompanyRolePersistenceFactory extends AbstractPersistenceFactory
 {
-    /**
-     * @return \Spryker\Zed\CompanyRole\Persistence\Mapper\CompanyRoleMapperInterface
-     */
     public function createCompanyRoleMapper(): CompanyRoleMapperInterface
     {
         return new CompanyRoleMapper();
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Persistence\Mapper\CompanyRolePermissionMapperInterface
-     */
     public function createCompanyRolePermissionMapper(): CompanyRolePermissionMapperInterface
     {
         return new CompanyRolePermissionMapper();
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Persistence\Mapper\CompanyRoleCompanyUserMapperInterface
-     */
     public function createCompanyRoleCompanyUserMapper(): CompanyRoleCompanyUserMapperInterface
     {
         return new CompanyRoleCompanyUserMapper();
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Persistence\Mapper\CompanyRoleCompanyMapper
-     */
     public function createCompanyRoleCompanyMapper(): CompanyRoleCompanyMapper
     {
         return new CompanyRoleCompanyMapper();
     }
 
-    /**
-     * @return \Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToPermissionQuery
-     */
     public function createCompanyRoleToPermissionQuery(): SpyCompanyRoleToPermissionQuery
     {
         return SpyCompanyRoleToPermissionQuery::create();
     }
 
-    /**
-     * @return \Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToCompanyUserQuery
-     */
     public function createCompanyRoleToCompanyUserQuery(): SpyCompanyRoleToCompanyUserQuery
     {
         return SpyCompanyRoleToCompanyUserQuery::create();
     }
 
-    /**
-     * @return \Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleQuery
-     */
     public function createCompanyRoleQuery(): SpyCompanyRoleQuery
     {
         return SpyCompanyRoleQuery::create();

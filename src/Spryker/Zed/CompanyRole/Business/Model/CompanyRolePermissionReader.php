@@ -18,19 +18,11 @@ class CompanyRolePermissionReader implements CompanyRolePermissionReaderInterfac
      */
     protected $repository;
 
-    /**
-     * @param \Spryker\Zed\CompanyRole\Persistence\CompanyRoleRepositoryInterface $repository
-     */
     public function __construct(CompanyRoleRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function getCompanyRolePermissions(
         CompanyRoleTransfer $companyRoleTransfer
     ): PermissionCollectionTransfer {

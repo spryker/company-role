@@ -11,10 +11,5 @@ use Generated\Shared\Transfer\CompanyRoleTransfer;
 
 interface CompanyRolePermissionWriterInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return void
-     */
     public function saveCompanyRolePermissions(CompanyRoleTransfer $companyRoleTransfer): void;
 }

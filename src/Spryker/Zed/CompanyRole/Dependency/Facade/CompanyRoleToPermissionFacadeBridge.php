@@ -24,9 +24,6 @@ class CompanyRoleToPermissionFacadeBridge implements CompanyRoleToPermissionFaca
         $this->permissionFacade = $permissionFacade;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findMergedRegisteredNonInfrastructuralPermissions(): PermissionCollectionTransfer
     {
         return $this->permissionFacade->findMergedRegisteredNonInfrastructuralPermissions();

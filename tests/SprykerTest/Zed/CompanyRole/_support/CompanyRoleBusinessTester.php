@@ -34,11 +34,6 @@ class CompanyRoleBusinessTester extends Actor
 {
     use _generated\CompanyRoleBusinessTesterActions;
 
-    /**
-     * @param array $seedData
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function createCompanyRoleWithPermission(array $seedData = []): CompanyRoleTransfer
     {
         if (!isset($seedData[CompanyRoleTransfer::FK_COMPANY])) {
@@ -55,11 +50,6 @@ class CompanyRoleBusinessTester extends Actor
         return $this->haveCompanyRole($seedData);
     }
 
-    /**
-     * @param array $seedData
-     *
-     * @return \Generated\Shared\Transfer\CompanyUserTransfer
-     */
     public function createCompanyUserWithPermission(array $seedData = []): CompanyUserTransfer
     {
         $companyTransfer = $this->haveCompany();

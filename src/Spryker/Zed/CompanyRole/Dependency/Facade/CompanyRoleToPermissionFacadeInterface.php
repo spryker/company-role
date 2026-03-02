@@ -11,8 +11,5 @@ use Generated\Shared\Transfer\PermissionCollectionTransfer;
 
 interface CompanyRoleToPermissionFacadeInterface
 {
-    /**
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findMergedRegisteredNonInfrastructuralPermissions(): PermissionCollectionTransfer;
 }

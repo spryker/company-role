@@ -12,10 +12,5 @@ use Generated\Shared\Transfer\CompanyRoleTransfer;
 
 interface CompanyRoleReaderInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function findCompanyRoleByUuid(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 }

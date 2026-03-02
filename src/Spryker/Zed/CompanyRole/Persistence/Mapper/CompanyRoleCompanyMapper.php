@@ -13,12 +13,6 @@ use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
 
 class CompanyRoleCompanyMapper
 {
-    /**
-     * @param \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole $spyCompanyRole
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function mapCompanyFromCompanyRoleEntityToCompanyRoleTransfer(
         SpyCompanyRole $spyCompanyRole,
         CompanyRoleTransfer $companyRoleTransfer

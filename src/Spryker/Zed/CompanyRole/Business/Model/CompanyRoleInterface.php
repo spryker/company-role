@@ -14,45 +14,15 @@ use Generated\Shared\Transfer\CompanyUserTransfer;
 
 interface CompanyRoleInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function create(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyResponseTransfer $companyResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyResponseTransfer
-     */
     public function createByCompany(CompanyResponseTransfer $companyResponseTransfer): CompanyResponseTransfer;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return void
-     */
     public function update(CompanyRoleTransfer $companyRoleTransfer): void;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function delete(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return void
-     */
     public function saveCompanyUser(CompanyUserTransfer $companyUserTransfer): void;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyUserTransfer
-     */
     public function hydrateCompanyUser(CompanyUserTransfer $companyUserTransfer): CompanyUserTransfer;
 }

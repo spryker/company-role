@@ -51,9 +51,6 @@ class CompanyRoleConfig extends AbstractBundleConfig
         ];
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     protected function getAdminRole(): CompanyRoleTransfer
     {
         return (new CompanyRoleTransfer())

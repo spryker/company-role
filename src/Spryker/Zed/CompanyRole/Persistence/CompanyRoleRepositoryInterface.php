@@ -15,38 +15,14 @@ use Generated\Shared\Transfer\PermissionTransfer;
 
 interface CompanyRoleRepositoryInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function getCompanyRoleById(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleTransfer;
 
-    /**
-     * @param int $idCompanyUser
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findPermissionsByIdCompanyUser(int $idCompanyUser): PermissionCollectionTransfer;
 
-    /**
-     * @param int $idCompanyRole
-     * @param int $idPermission
-     *
-     * @return \Generated\Shared\Transfer\PermissionTransfer
-     */
     public function findPermissionsByIdCompanyRoleByIdPermission(int $idCompanyRole, int $idPermission): PermissionTransfer;
 
-    /**
-     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
-     */
     public function findCompanyRole(): CompanyRoleCollectionTransfer;
 
-    /**
-     * @param int $idCompanyRole
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findCompanyRolePermissions(int $idCompanyRole): PermissionCollectionTransfer;
 
     /**
@@ -57,11 +33,6 @@ interface CompanyRoleRepositoryInterface
      */
     public function getCompanyUserIdsByPermissionKey(string $permissionKey, ?int $idCompany = null): array;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
-     */
     public function getCompanyRoleCollection(
         CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
     ): CompanyRoleCollectionTransfer;
@@ -73,32 +44,12 @@ interface CompanyRoleRepositoryInterface
      */
     public function getDefaultCompanyRole(): CompanyRoleTransfer;
 
-    /**
-     * @param int $idCompany
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer|null
-     */
     public function findDefaultCompanyRoleByIdCompany(int $idCompany): ?CompanyRoleTransfer;
 
-    /**
-     * @param int $idCompanyRole
-     *
-     * @return bool
-     */
     public function hasUsers(int $idCompanyRole): bool;
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer|null
-     */
     public function findCompanyRoleById(CompanyRoleTransfer $companyRoleTransfer): ?CompanyRoleTransfer;
 
-    /**
-     * @param string $companyRoleUuid
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer|null
-     */
     public function findCompanyRoleByUuid(string $companyRoleUuid): ?CompanyRoleTransfer;
 
     /**

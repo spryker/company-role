@@ -35,11 +35,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
      */
     protected static array $companyRoleCollectionCache = [];
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function getCompanyRoleById(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleTransfer
     {
         $companyRoleTransfer->requireIdCompanyRole();
@@ -52,11 +47,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $this->prepareCompanyRoleTransfer($spyCompanyRole);
     }
 
-    /**
-     * @param int $idCompanyUser
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findPermissionsByIdCompanyUser(int $idCompanyUser): PermissionCollectionTransfer
     {
         $query = $this->getFactory()
@@ -92,12 +82,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $permissionCollectionTransfer;
     }
 
-    /**
-     * @param int $idCompanyRole
-     * @param int $idPermission
-     *
-     * @return \Generated\Shared\Transfer\PermissionTransfer
-     */
     public function findPermissionsByIdCompanyRoleByIdPermission(int $idCompanyRole, int $idPermission): PermissionTransfer
     {
         $query = $this->getFactory()
@@ -145,9 +129,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return [];
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
-     */
     public function findCompanyRole(): CompanyRoleCollectionTransfer
     {
         $query = $this->getFactory()
@@ -169,11 +150,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $companyRoleCollectionTransfer;
     }
 
-    /**
-     * @param int $idCompanyRole
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findCompanyRolePermissions(int $idCompanyRole): PermissionCollectionTransfer
     {
         $query = $this->getFactory()
@@ -227,11 +203,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
          return $companyUserIds->toArray();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
-     */
     public function getCompanyRoleCollection(
         CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
     ): CompanyRoleCollectionTransfer {
@@ -270,12 +241,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $collectionTransfer;
     }
 
-    /**
-     * @param \Propel\Runtime\ActiveQuery\ModelCriteria $modelCriteria
-     * @param \Generated\Shared\Transfer\FilterTransfer|null $filterTransfer
-     *
-     * @return \Propel\Runtime\ActiveQuery\ModelCriteria
-     */
     public function buildQueryFromCriteria(ModelCriteria $modelCriteria, ?FilterTransfer $filterTransfer = null): ModelCriteria
     {
         $modelCriteria = parent::buildQueryFromCriteria($modelCriteria, $filterTransfer);
@@ -318,11 +283,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $query->find();
     }
 
-    /**
-     * @param \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole $spyCompanyRole
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     protected function prepareCompanyRoleTransfer(SpyCompanyRole $spyCompanyRole): CompanyRoleTransfer
     {
         $companyRoleTransfer = $this->getFactory()
@@ -372,11 +332,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $this->prepareCompanyRoleTransfer($spyCompanyRole);
     }
 
-    /**
-     * @param int $idCompany
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer|null
-     */
     public function findDefaultCompanyRoleByIdCompany(int $idCompany): ?CompanyRoleTransfer
     {
         $companyRoleEntity = $this->getFactory()
@@ -392,11 +347,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $this->prepareCompanyRoleTransfer($companyRoleEntity);
     }
 
-    /**
-     * @param int $idCompanyRole
-     *
-     * @return bool
-     */
     public function hasUsers(int $idCompanyRole): bool
     {
         $spyCompanyRoleToCompanyUser = $this->getFactory()
@@ -407,11 +357,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return ($spyCompanyRoleToCompanyUser !== null);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer|null
-     */
     public function findCompanyRoleById(CompanyRoleTransfer $companyRoleTransfer): ?CompanyRoleTransfer
     {
         $companyRoleTransfer->requireIdCompanyRole();
@@ -484,12 +429,6 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $groupedRoles;
     }
 
-    /**
-     * @param array $array
-     * @param string $glue
-     *
-     * @return string
-     */
     protected function recursiveImplode(array $array, string $glue = ','): string
     {
         $result = [];

@@ -45,9 +45,6 @@ class CompanyRoleFacadeTest extends Unit
      */
     protected CompanyRoleBusinessTester $tester;
 
-    /**
-     * @return void
-     */
     public function testGetCompanyRoleByIdShouldReturnCorrectData(): void
     {
         // Prepare
@@ -67,9 +64,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertEquals($existingCompanyRole->getName(), $resultCompanyRoleTransfer->getName());
     }
 
-    /**
-     * @return void
-     */
     public function testGetCompanyUserIdsByPermissionKeyReturnsCorrectData(): void
     {
         //Assign
@@ -87,9 +81,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertContains($companyUserWithPermissionTransfer->getIdCompanyUser(), $companyUserIds);
     }
 
-    /**
-     * @return void
-     */
     public function testCreateCompanyRoleShouldReturnIsSuccess(): void
     {
         // Prepare
@@ -106,9 +97,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertTrue($companyRoleResponseTransfer->getIsSuccessful());
     }
 
-    /**
-     * @return void
-     */
     public function testCreateCompanyRoleByCompanyShouldReturnIsSuccess(): void
     {
         // Prepare
@@ -127,9 +115,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertEmpty($companyResponseTransfer->getMessages());
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCompanyRoleShouldUpdateSuccessfully(): void
     {
         // Prepare
@@ -152,9 +137,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertSame(static::TEST_NAME, $resultCompanyRoleTransfer->getName());
     }
 
-    /**
-     * @return void
-     */
     public function testDeleteCompanyRoleShouldReturnIsSuccess(): void
     {
         // Prepare
@@ -171,9 +153,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertTrue($companyRoleResponseTransfer->getIsSuccessful());
     }
 
-    /**
-     * @return void
-     */
     public function testFindDefaultCompanyRoleByIdCompanyReturnNullIfNonFound(): void
     {
         // Prepare
@@ -191,9 +170,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertNull($resultCompanyRoleTransfer);
     }
 
-    /**
-     * @return void
-     */
     public function testFindDefaultCompanyRoleByIdCompany(): void
     {
         // Prepare
@@ -212,9 +188,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertSame($resultCompanyRoleTransfer->getIdCompanyRole(), $companyRoleTransfer->getIdCompanyRole());
     }
 
-    /**
-     * @return void
-     */
     public function testFindCompanyRoleByIdShouldReturnCorrectDataIfCompanyRoleExists(): void
     {
         // Prepare
@@ -234,9 +207,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertEquals($existingCompanyRole->getName(), $resultCompanyRoleTransfer->getName());
     }
 
-    /**
-     * @return void
-     */
     public function testFindCompanyRoleByIdShouldReturnNullIfCompanyRoleDoesNotExist(): void
     {
         // Prepare
@@ -250,9 +220,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertNull($resultCompanyRole);
     }
 
-    /**
-     * @return void
-     */
     public function testFindCompanyRolesShouldReturnCollection(): void
     {
         // Arrange
@@ -266,9 +233,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertGreaterThan(0, $companyRoleCollectionTransfer->getRoles()->count());
     }
 
-    /**
-     * @return void
-     */
     public function testGetCompanyRoleCollectionShouldReturnCollectionByIdCompanyCriteria(): void
     {
         // Arrange
@@ -284,9 +248,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertGreaterThan(0, $companyRoleCollectionTransfer->getRoles()->count());
     }
 
-    /**
-     * @return void
-     */
     public function testGetCompanyRoleCollectionShouldReturnCollectionByIdCompanyUserCriteria(): void
     {
         // Arrange
@@ -302,9 +263,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertGreaterThan(0, $companyRoleCollectionTransfer->getRoles()->count());
     }
 
-    /**
-     * @return void
-     */
     public function testFindCompanyRolePermissionsShouldReturnCollection(): void
     {
         // Arrange
@@ -318,9 +276,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertGreaterThan(0, $permissionCollectionTransfer->getPermissions()->count());
     }
 
-    /**
-     * @return void
-     */
     public function testFindPermissionsByIdCompanyUserShouldReturnCollection(): void
     {
         // Arrange
@@ -334,9 +289,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertGreaterThan(0, $permissionCollectionTransfer->getPermissions()->count());
     }
 
-    /**
-     * @return void
-     */
     public function testUpdateCompanyRolePermissionShouldPersistNewConfiguration(): void
     {
         // Arrange
@@ -357,9 +309,6 @@ class CompanyRoleFacadeTest extends Unit
         $this->assertSame(static::CONFIGURATION, $permissionTransferUpdated->getConfiguration());
     }
 
-    /**
-     * @return void
-     */
     public function testHydrateCompanyUserShouldReturnHydratedCompanyUser(): void
     {
         // Arrange

@@ -23,42 +23,22 @@ use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
  */
 class GatewayController extends AbstractGatewayController
 {
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function createAction(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         return $this->getFacade()->create($companyRoleTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
-     */
     public function getCompanyRoleCollectionAction(
         CompanyRoleCriteriaFilterTransfer $companyRoleCriteriaFilterTransfer
     ): CompanyRoleCollectionTransfer {
         return $this->getFacade()->getCompanyRoleCollection($companyRoleCriteriaFilterTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function getCompanyRoleByIdAction(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleTransfer
     {
         return $this->getFacade()->getCompanyRoleById($companyRoleTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function updateCompanyRoleAction(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         $this->getFacade()->update($companyRoleTransfer);
@@ -69,11 +49,6 @@ class GatewayController extends AbstractGatewayController
         return $response;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findCompanyRolePermissionsAction(
         CompanyRoleTransfer $companyRoleTransfer
     ): PermissionCollectionTransfer {
@@ -82,21 +57,11 @@ class GatewayController extends AbstractGatewayController
         return $this->getFacade()->findCompanyRolePermissions($companyRoleTransfer->getIdCompanyRole());
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function deleteCompanyRoleAction(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         return $this->getFacade()->delete($companyRoleTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function saveCompanyUserAction(CompanyUserTransfer $companyUserTransfer): CompanyRoleResponseTransfer
     {
         $this->getFacade()->saveCompanyUser($companyUserTransfer);
@@ -120,11 +85,6 @@ class GatewayController extends AbstractGatewayController
         );
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PermissionTransfer $permissionTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRolePermissionResponseTransfer
-     */
     public function updateCompanyRolePermissionAction(PermissionTransfer $permissionTransfer): CompanyRolePermissionResponseTransfer
     {
         $this->getFacade()->updateCompanyRolePermission($permissionTransfer);
@@ -134,11 +94,6 @@ class GatewayController extends AbstractGatewayController
             ->setIsSuccessful(true);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function findCompanyRoleByUuidAction(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         return $this->getFacade()->findCompanyRoleByUuid($companyRoleTransfer);

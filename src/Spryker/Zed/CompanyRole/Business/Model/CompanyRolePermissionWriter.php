@@ -22,10 +22,6 @@ class CompanyRolePermissionWriter implements CompanyRolePermissionWriterInterfac
      */
     protected $entityManager;
 
-    /**
-     * @param \Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionReaderInterface $permissionReader
-     * @param \Spryker\Zed\CompanyRole\Persistence\CompanyRoleEntityManagerInterface $entityManager
-     */
     public function __construct(
         CompanyRolePermissionReaderInterface $permissionReader,
         CompanyRoleEntityManagerInterface $entityManager
@@ -34,11 +30,6 @@ class CompanyRolePermissionWriter implements CompanyRolePermissionWriterInterfac
         $this->permissionReader = $permissionReader;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return void
-     */
     public function saveCompanyRolePermissions(CompanyRoleTransfer $companyRoleTransfer): void
     {
         $companyRoleTransfer->requireIdCompanyRole();
@@ -59,11 +50,6 @@ class CompanyRolePermissionWriter implements CompanyRolePermissionWriterInterfac
         );
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return array
-     */
     protected function getCompanyRolePermissions(CompanyRoleTransfer $companyRoleTransfer): array
     {
         $permissions = [];
@@ -75,11 +61,6 @@ class CompanyRolePermissionWriter implements CompanyRolePermissionWriterInterfac
         return $permissions;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return array
-     */
     protected function getRequestedPermissions(CompanyRoleTransfer $companyRoleTransfer): array
     {
         $permissions = [];
@@ -105,12 +86,6 @@ class CompanyRolePermissionWriter implements CompanyRolePermissionWriterInterfac
         $this->entityManager->addPermissions($permissions, $idCompanyRole);
     }
 
-    /**
-     * @param array $idPermissions
-     * @param int $idCompanyRole
-     *
-     * @return void
-     */
     protected function removePermissions(array $idPermissions, int $idCompanyRole): void
     {
         $this->entityManager->removePermissions($idPermissions, $idCompanyRole);

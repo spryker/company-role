@@ -19,11 +19,6 @@ use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
  */
 class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyRoleEntityManagerInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function saveCompanyRole(
         CompanyRoleTransfer $companyRoleTransfer
     ): CompanyRoleTransfer {
@@ -42,11 +37,6 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
             ->mapEntityToCompanyRoleTransfer($spyCompanyRole, $companyRoleTransfer);
     }
 
-    /**
-     * @param int $idCompanyRole
-     *
-     * @return void
-     */
     public function deleteCompanyRoleById(int $idCompanyRole): void
     {
         $this->getFactory()
@@ -55,11 +45,6 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
             ->delete();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return void
-     */
     public function saveCompanyUser(CompanyUserTransfer $companyUserTransfer): void
     {
         $companyRoles = [];
@@ -101,12 +86,6 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
         }
     }
 
-    /**
-     * @param array $idPermissions
-     * @param int $idCompanyRole
-     *
-     * @return void
-     */
     public function removePermissions(array $idPermissions, int $idCompanyRole): void
     {
         if (count($idPermissions) === 0) {
@@ -120,11 +99,6 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
             ->delete();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PermissionTransfer $permissionTransfer
-     *
-     * @return void
-     */
     public function updateCompanyRolePermission(PermissionTransfer $permissionTransfer): void
     {
         $spyCompanyRoleToPermission = $this->getFactory()
@@ -139,12 +113,6 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
         }
     }
 
-    /**
-     * @param int $idCompanyRole
-     * @param \Generated\Shared\Transfer\PermissionTransfer $permissionTransfer
-     *
-     * @return void
-     */
     protected function saveCompanyRolePermission(int $idCompanyRole, PermissionTransfer $permissionTransfer): void
     {
         $spyCompanyRoleToPermission = $this->getFactory()
@@ -157,11 +125,6 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
         $spyCompanyRoleToPermission->save();
     }
 
-    /**
-     * @param \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole $spyCompanyRole
-     *
-     * @return void
-     */
     protected function cleanupCompanyDefaultRoles(SpyCompanyRole $spyCompanyRole): void
     {
         $updateQuery = $this->getFactory()

@@ -18,19 +18,11 @@ class CompanyRoleReader implements CompanyRoleReaderInterface
      */
     protected $companyRoleRepository;
 
-    /**
-     * @param \Spryker\Zed\CompanyRole\Persistence\CompanyRoleRepositoryInterface $companyRoleRepository
-     */
     public function __construct(CompanyRoleRepositoryInterface $companyRoleRepository)
     {
         $this->companyRoleRepository = $companyRoleRepository;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function findCompanyRoleByUuid(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         $companyRoleTransfer->requireUuid();

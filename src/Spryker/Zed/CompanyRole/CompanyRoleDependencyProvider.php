@@ -26,11 +26,6 @@ class CompanyRoleDependencyProvider extends AbstractBundleDependencyProvider
      */
     public const PLUGINS_COMPANY_ROLE_POST_SAVE = 'PLUGINS_COMPANY_ROLE_POST_SAVE';
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
@@ -40,11 +35,6 @@ class CompanyRoleDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addPermissionFacade(Container $container): Container
     {
         $container->set(static::FACADE_PERMISSION, function (Container $container) {
@@ -56,11 +46,6 @@ class CompanyRoleDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addCompanyRolePostSavePlugins(Container $container): Container
     {
         $container->set(static::PLUGINS_COMPANY_ROLE_POST_SAVE, function (Container $container) {

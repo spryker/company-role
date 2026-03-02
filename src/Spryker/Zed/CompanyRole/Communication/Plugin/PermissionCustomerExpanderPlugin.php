@@ -43,12 +43,6 @@ class PermissionCustomerExpanderPlugin extends AbstractPlugin implements Custome
         return $this->addCustomerPermissions($customerTransfer, $permissionCollectionTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
-     * @param \Generated\Shared\Transfer\PermissionCollectionTransfer $permissionCollectionTransfer
-     *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
-     */
     protected function addCustomerPermissions(
         CustomerTransfer $customerTransfer,
         PermissionCollectionTransfer $permissionCollectionTransfer

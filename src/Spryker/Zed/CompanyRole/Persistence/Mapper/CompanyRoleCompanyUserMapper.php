@@ -15,12 +15,6 @@ use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
 
 class CompanyRoleCompanyUserMapper implements CompanyRoleCompanyUserMapperInterface
 {
-    /**
-     * @param \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole $spyCompanyRole
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function hydrateCompanyUserCollection(
         SpyCompanyRole $spyCompanyRole,
         CompanyRoleTransfer $companyRoleTransfer

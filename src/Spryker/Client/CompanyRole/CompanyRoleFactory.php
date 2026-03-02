@@ -18,17 +18,11 @@ use Spryker\Client\Kernel\AbstractFactory;
 
 class CompanyRoleFactory extends AbstractFactory
 {
-    /**
-     * @return \Spryker\Client\CompanyRole\Zed\CompanyRoleStubInterface
-     */
     public function createZedCompanyRoleStub(): CompanyRoleStubInterface
     {
         return new CompanyRoleStub($this->getZedRequestClient());
     }
 
-    /**
-     * @return \Spryker\Client\CompanyRole\Permission\CompanyRolePermissionsHandlerInterface
-     */
     public function createCompanyRolePermissionsHandler(): CompanyRolePermissionsHandlerInterface
     {
         return new CompanyRolePermissionsHandler(
@@ -37,25 +31,16 @@ class CompanyRoleFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\CompanyRole\Dependency\Client\CompanyRoleToCustomerClientInterface
-     */
     public function getCustomerClient(): CompanyRoleToCustomerClientInterface
     {
         return $this->getProvidedDependency(CompanyRoleDependencyProvider::CLIENT_CUSTOMER);
     }
 
-    /**
-     * @return \Spryker\Client\CompanyRole\Dependency\Client\CompanyRoleToZedRequestClientInterface
-     */
     public function getZedRequestClient(): CompanyRoleToZedRequestClientInterface
     {
         return $this->getProvidedDependency(CompanyRoleDependencyProvider::CLIENT_ZED_REQUEST);
     }
 
-    /**
-     * @return \Spryker\Client\CompanyRole\Dependency\Client\CompanyRoleToPermissionClientInterface
-     */
     public function getPermissionClient(): CompanyRoleToPermissionClientInterface
     {
         return $this->getProvidedDependency(CompanyRoleDependencyProvider::CLIENT_PERMISSION);

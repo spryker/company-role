@@ -31,10 +31,6 @@ class CompanyRolePermissionsHandler implements CompanyRolePermissionsHandlerInte
      */
     protected $companyRoleStub;
 
-    /**
-     * @param \Spryker\Client\CompanyRole\Dependency\Client\CompanyRoleToPermissionClientInterface $permissionClient
-     * @param \Spryker\Client\CompanyRole\Zed\CompanyRoleStubInterface $companyRoleStub
-     */
     public function __construct(
         CompanyRoleToPermissionClientInterface $permissionClient,
         CompanyRoleStubInterface $companyRoleStub
@@ -43,11 +39,6 @@ class CompanyRolePermissionsHandler implements CompanyRolePermissionsHandlerInte
         $this->companyRoleStub = $companyRoleStub;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function findNonInfrastructuralCompanyRolePermissionsByIdCompanyRole(
         CompanyRoleTransfer $companyRoleTransfer
     ): PermissionCollectionTransfer {
@@ -74,11 +65,6 @@ class CompanyRolePermissionsHandler implements CompanyRolePermissionsHandlerInte
             ->setPermissions($permissions);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PermissionTransfer $permissionTransfer
-     *
-     * @return array
-     */
     protected function transformPermissionTransferToArray(
         PermissionTransfer $permissionTransfer
     ): array {

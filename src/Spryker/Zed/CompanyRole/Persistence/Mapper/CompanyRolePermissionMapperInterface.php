@@ -12,12 +12,6 @@ use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
 
 interface CompanyRolePermissionMapperInterface
 {
-    /**
-     * @param \Orm\Zed\CompanyRole\Persistence\SpyCompanyRole $spyCompanyRole
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleTransfer
-     */
     public function hydratePermissionCollection(
         SpyCompanyRole $spyCompanyRole,
         CompanyRoleTransfer $companyRoleTransfer

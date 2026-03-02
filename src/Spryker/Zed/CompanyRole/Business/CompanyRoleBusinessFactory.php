@@ -26,9 +26,6 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
  */
 class CompanyRoleBusinessFactory extends AbstractBusinessFactory
 {
-    /**
-     * @return \Spryker\Zed\CompanyRole\Business\Model\CompanyRoleInterface
-     */
     public function createCompanyRole(): CompanyRoleInterface
     {
         return new CompanyRole(
@@ -41,17 +38,11 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Business\Reader\CompanyRoleReaderInterface
-     */
     public function createCompanyRoleReader(): CompanyRoleReaderInterface
     {
         return new CompanyRoleReader($this->getRepository());
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionWriterInterface
-     */
     protected function createCompanyRolePermissionWriter(): CompanyRolePermissionWriterInterface
     {
         return new CompanyRolePermissionWriter(
@@ -60,17 +51,11 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionReaderInterface
-     */
     protected function createCompanyRolePermissionReader(): CompanyRolePermissionReaderInterface
     {
         return new CompanyRolePermissionReader($this->getRepository());
     }
 
-    /**
-     * @return \Spryker\Zed\CompanyRole\Dependency\Facade\CompanyRoleToPermissionFacadeInterface
-     */
     public function getPermissionFacade(): CompanyRoleToPermissionFacadeInterface
     {
         return $this->getProvidedDependency(CompanyRoleDependencyProvider::FACADE_PERMISSION);

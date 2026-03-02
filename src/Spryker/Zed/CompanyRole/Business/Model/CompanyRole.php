@@ -48,11 +48,6 @@ class CompanyRole implements CompanyRoleInterface
     ) {
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function create(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         return $this->getTransactionHandler()->handleTransaction(function () use ($companyRoleTransfer) {
@@ -60,11 +55,6 @@ class CompanyRole implements CompanyRoleInterface
         });
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyResponseTransfer $companyResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyResponseTransfer
-     */
     public function createByCompany(CompanyResponseTransfer $companyResponseTransfer): CompanyResponseTransfer
     {
         $companyRoles = $this->companyRoleConfig->getPredefinedCompanyRoles();
@@ -107,12 +97,6 @@ class CompanyRole implements CompanyRoleInterface
         return $companyResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleResponseTransfer $companyRoleResponseTransfer
-     * @param \Generated\Shared\Transfer\CompanyResponseTransfer $companyResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyResponseTransfer
-     */
     protected function addCompanyRoleMessagesToCompanyResponseTransfer(
         CompanyRoleResponseTransfer $companyRoleResponseTransfer,
         CompanyResponseTransfer $companyResponseTransfer
@@ -124,13 +108,6 @@ class CompanyRole implements CompanyRoleInterface
         return $companyResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     * @param \Generated\Shared\Transfer\CompanyTransfer $companyTransfer
-     * @param \Generated\Shared\Transfer\PermissionCollectionTransfer $availablePermissions
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     protected function createCompanyRoleWithAssignedPermissions(
         CompanyRoleTransfer $companyRoleTransfer,
         CompanyTransfer $companyTransfer,
@@ -148,12 +125,6 @@ class CompanyRole implements CompanyRoleInterface
         return $this->create($companyRoleTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PermissionCollectionTransfer $companyRolePermissions
-     * @param \Generated\Shared\Transfer\PermissionCollectionTransfer $availablePermissions
-     *
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     protected function findAssignedCompanyRolePermissions(
         PermissionCollectionTransfer $companyRolePermissions,
         PermissionCollectionTransfer $availablePermissions
@@ -171,11 +142,6 @@ class CompanyRole implements CompanyRoleInterface
         return $availableCompanyRolePermissions;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return void
-     */
     public function update(CompanyRoleTransfer $companyRoleTransfer): void
     {
         $this->getTransactionHandler()->handleTransaction(function () use ($companyRoleTransfer) {
@@ -183,11 +149,6 @@ class CompanyRole implements CompanyRoleInterface
         });
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     public function delete(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         $companyRoleResponseTransfer = (new CompanyRoleResponseTransfer())
@@ -199,11 +160,6 @@ class CompanyRole implements CompanyRoleInterface
         });
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return void
-     */
     public function saveCompanyUser(CompanyUserTransfer $companyUserTransfer): void
     {
         $this->getTransactionHandler()->handleTransaction(function () use ($companyUserTransfer) {
@@ -211,11 +167,6 @@ class CompanyRole implements CompanyRoleInterface
         });
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyUserTransfer
-     */
     public function hydrateCompanyUser(CompanyUserTransfer $companyUserTransfer): CompanyUserTransfer
     {
         $companyUserTransfer->requireIdCompanyUser();
@@ -227,11 +178,6 @@ class CompanyRole implements CompanyRoleInterface
         return $companyUserTransfer->setCompanyRoleCollection($companyRoleCollection);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleResponseTransfer $companyRoleResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     protected function executeDeleteTransaction(CompanyRoleResponseTransfer $companyRoleResponseTransfer): CompanyRoleResponseTransfer
     {
         $companyRoleResponseTransfer
@@ -253,11 +199,6 @@ class CompanyRole implements CompanyRoleInterface
         return $companyRoleResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleResponseTransfer $companyRoleResponseTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     protected function checkOnRelatedUsers(CompanyRoleResponseTransfer $companyRoleResponseTransfer): CompanyRoleResponseTransfer
     {
         $hasUsers = $this->repository->hasUsers(
@@ -280,11 +221,6 @@ class CompanyRole implements CompanyRoleInterface
         return $companyRoleResponseTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
-     */
     protected function executeCompanyRoleSaveTransaction(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         $permissionCollection = $companyRoleTransfer->getPermissionCollection();

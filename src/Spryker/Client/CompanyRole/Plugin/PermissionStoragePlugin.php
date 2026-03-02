@@ -16,9 +16,6 @@ use Spryker\Client\PermissionExtension\Dependency\Plugin\PermissionStoragePlugin
  */
 class PermissionStoragePlugin extends AbstractPlugin implements PermissionStoragePluginInterface
 {
-    /**
-     * @return \Generated\Shared\Transfer\PermissionCollectionTransfer
-     */
     public function getPermissionCollection(): PermissionCollectionTransfer
     {
         $customerTransfer = $this->getFactory()
