@@ -31,9 +31,9 @@ use SprykerTest\Zed\CompanyRole\CompanyRoleBusinessTester;
 class CompanyRoleFacadeTest extends Unit
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
-    protected const CONFIGURATION = ['testKey' => 'testValue'];
+    protected const array CONFIGURATION = ['testKey' => 'testValue'];
 
     /**
      * @var string
@@ -261,6 +261,60 @@ class CompanyRoleFacadeTest extends Unit
 
         // Assert
         $this->assertGreaterThan(0, $companyRoleCollectionTransfer->getRoles()->count());
+    }
+
+    public function testGetCompanyRoleCollectionShouldReturnCollectionByIdCompanyUsersCriteria(): void
+    {
+        // Arrange
+        $companyUserWithPermissionTransfer = $this->tester->createCompanyUserWithPermission();
+        $otherCompanyUserTransfer = $this->tester->createCompanyUserWithPermission();
+
+        $criteriaFilterTransfer = (new CompanyRoleCriteriaFilterTransfer())
+            ->addIdCompanyUser($companyUserWithPermissionTransfer->getIdCompanyUser());
+
+        // Act
+        $companyRoleCollectionTransfer = $this->tester->getFacade()
+            ->getCompanyRoleCollection($criteriaFilterTransfer);
+
+        // Assert
+        $returnedCompanyUserIds = array_map(
+            static fn ($roleTransfer) => $roleTransfer->getIdCompanyRole(),
+            $companyRoleCollectionTransfer->getRoles()->getArrayCopy(),
+        );
+
+        $expectedRoleIds = array_map(
+            static fn ($roleTransfer) => $roleTransfer->getIdCompanyRole(),
+            $companyUserWithPermissionTransfer->getCompanyRoleCollection()->getRoles()->getArrayCopy(),
+        );
+
+        $otherRoleIds = array_map(
+            static fn ($roleTransfer) => $roleTransfer->getIdCompanyRole(),
+            $otherCompanyUserTransfer->getCompanyRoleCollection()->getRoles()->getArrayCopy(),
+        );
+
+        foreach ($expectedRoleIds as $expectedRoleId) {
+            $this->assertContains($expectedRoleId, $returnedCompanyUserIds);
+        }
+
+        foreach ($otherRoleIds as $otherRoleId) {
+            $this->assertNotContains($otherRoleId, $returnedCompanyUserIds);
+        }
+    }
+
+    public function testGetCompanyRoleCollectionShouldReturnEmptyCollectionByFakeIdCompanyUsers(): void
+    {
+        // Arrange
+        $this->tester->createCompanyUserWithPermission();
+
+        $criteriaFilterTransfer = (new CompanyRoleCriteriaFilterTransfer())
+            ->addIdCompanyUser(-1);
+
+        // Act
+        $companyRoleCollectionTransfer = $this->tester->getFacade()
+            ->getCompanyRoleCollection($criteriaFilterTransfer);
+
+        // Assert
+        $this->assertCount(0, $companyRoleCollectionTransfer->getRoles());
     }
 
     public function testFindCompanyRolePermissionsShouldReturnCollection(): void

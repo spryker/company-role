@@ -9,6 +9,7 @@
     <transfer name="CompanyRoleCriteriaFilter">
         <property name="idCompany" type="int"/>
         <property name="idCompanyUser" type="int"/>
+        <property name="idCompanyUsers" type="int[]" singular="idCompanyUser"/>
         <property name="filter" type="Filter"/>
         <property name="pagination" type="Pagination"/>
     </transfer>

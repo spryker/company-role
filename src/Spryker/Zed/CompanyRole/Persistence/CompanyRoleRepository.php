@@ -224,6 +224,14 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
                 ->endUse();
         }
 
+        $idCompanyUsers = $companyRoleCriteriaFilterTransfer->getIdCompanyUsers();
+        if ($idCompanyUsers !== []) {
+            $query->useSpyCompanyRoleToCompanyUserQuery()
+                    ->filterByFkCompanyUser_In($idCompanyUsers)
+                ->endUse()
+                ->distinct();
+        }
+
         $collection = $this->buildQueryFromCriteria($query, $companyRoleCriteriaFilterTransfer->getFilter());
         /** @var array<\Orm\Zed\CompanyRole\Persistence\SpyCompanyRole> $spyCompanyRoleCollection */
         $spyCompanyRoleCollection = $this->getPaginatedCollection($collection, $companyRoleCriteriaFilterTransfer->getPagination());
