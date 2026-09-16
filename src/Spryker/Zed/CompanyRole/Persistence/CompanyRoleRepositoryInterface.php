@@ -58,4 +58,11 @@ interface CompanyRoleRepositoryInterface
      * @return array<int, list<string>>
      */
     public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array;
+
+    /**
+     * @param list<int> $companyRoleIds
+     *
+     * @return array<int, int>
+     */
+    public function getCompanyRoleIdsBelongingToCompany(array $companyRoleIds, int $idCompany): array;
 }

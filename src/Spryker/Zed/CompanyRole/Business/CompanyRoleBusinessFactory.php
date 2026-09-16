@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\CompanyRole\Business;
 
+use Spryker\Zed\CompanyRole\Business\CompanyUserValidator\CompanyUserRoleValidator;
+use Spryker\Zed\CompanyRole\Business\CompanyUserValidator\CompanyUserRoleValidatorInterface;
 use Spryker\Zed\CompanyRole\Business\Model\CompanyRole;
 use Spryker\Zed\CompanyRole\Business\Model\CompanyRoleInterface;
 use Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionReader;
@@ -67,5 +69,12 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
     public function getCompanyRolePostSavePlugins(): array
     {
         return $this->getProvidedDependency(CompanyRoleDependencyProvider::PLUGINS_COMPANY_ROLE_POST_SAVE);
+    }
+
+    public function createCompanyUserRoleValidator(): CompanyUserRoleValidatorInterface
+    {
+        return new CompanyUserRoleValidator(
+            $this->getRepository(),
+        );
     }
 }

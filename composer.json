@@ -9,7 +9,7 @@
         "spryker/company-extension": "^1.0.0",
         "spryker/company-role-extension": "^1.0.0",
         "spryker/company-user": "^1.0.0 || ^2.0.0",
-        "spryker/company-user-extension": "^1.0.0",
+        "spryker/company-user-extension": "^1.2.0",
         "spryker/customer": "^7.5.0",
         "spryker/kernel": "^3.30.0",
         "spryker/permission": "^1.2.0",

@@ -437,6 +437,34 @@ class CompanyRoleRepository extends AbstractRepository implements CompanyRoleRep
         return $groupedRoles;
     }
 
+    /**
+     * @param list<int> $companyRoleIds
+     *
+     * @return array<int, int>
+     */
+    public function getCompanyRoleIdsBelongingToCompany(array $companyRoleIds, int $idCompany): array
+    {
+        if ($companyRoleIds === []) {
+            return [];
+        }
+
+        /** @var \Propel\Runtime\Collection\ArrayCollection $matchedCompanyRoles */
+        $matchedCompanyRoles = $this->getFactory()
+            ->createCompanyRoleQuery()
+            ->filterByIdCompanyRole_In($companyRoleIds)
+            ->filterByFkCompany($idCompany)
+            ->select([
+                SpyCompanyRoleTableMap::COL_ID_COMPANY_ROLE,
+                SpyCompanyRoleTableMap::COL_FK_COMPANY,
+            ])
+            ->find();
+
+        return $matchedCompanyRoles->toKeyValue(
+            SpyCompanyRoleTableMap::COL_ID_COMPANY_ROLE,
+            SpyCompanyRoleTableMap::COL_ID_COMPANY_ROLE,
+        );
+    }
+
     protected function recursiveImplode(array $array, string $glue = ','): string
     {
         $result = [];
