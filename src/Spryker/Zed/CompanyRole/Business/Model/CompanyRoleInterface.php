@@ -16,9 +16,13 @@ interface CompanyRoleInterface
 {
     public function create(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 
+    public function createCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
+
     public function createByCompany(CompanyResponseTransfer $companyResponseTransfer): CompanyResponseTransfer;
 
     public function update(CompanyRoleTransfer $companyRoleTransfer): void;
+
+    public function updateCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 
     public function delete(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 

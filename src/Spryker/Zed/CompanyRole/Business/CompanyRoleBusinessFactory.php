@@ -17,6 +17,8 @@ use Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionWriter;
 use Spryker\Zed\CompanyRole\Business\Model\CompanyRolePermissionWriterInterface;
 use Spryker\Zed\CompanyRole\Business\Reader\CompanyRoleReader;
 use Spryker\Zed\CompanyRole\Business\Reader\CompanyRoleReaderInterface;
+use Spryker\Zed\CompanyRole\Business\Validator\CompanyRoleValidator;
+use Spryker\Zed\CompanyRole\Business\Validator\CompanyRoleValidatorInterface;
 use Spryker\Zed\CompanyRole\CompanyRoleDependencyProvider;
 use Spryker\Zed\CompanyRole\Dependency\Facade\CompanyRoleToPermissionFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
@@ -36,6 +38,7 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
             $this->createCompanyRolePermissionWriter(),
             $this->getConfig(),
             $this->getPermissionFacade(),
+            $this->createCompanyRoleValidator(),
             $this->getCompanyRolePostSavePlugins(),
         );
     }
@@ -45,7 +48,15 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
         return new CompanyRoleReader($this->getRepository());
     }
 
-    protected function createCompanyRolePermissionWriter(): CompanyRolePermissionWriterInterface
+    public function createCompanyRoleValidator(): CompanyRoleValidatorInterface
+    {
+        return new CompanyRoleValidator(
+            $this->getRepository(),
+            $this->getPermissionFacade(),
+        );
+    }
+
+    public function createCompanyRolePermissionWriter(): CompanyRolePermissionWriterInterface
     {
         return new CompanyRolePermissionWriter(
             $this->createCompanyRolePermissionReader(),
@@ -53,7 +64,7 @@ class CompanyRoleBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    protected function createCompanyRolePermissionReader(): CompanyRolePermissionReaderInterface
+    public function createCompanyRolePermissionReader(): CompanyRolePermissionReaderInterface
     {
         return new CompanyRolePermissionReader($this->getRepository());
     }

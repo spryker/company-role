@@ -10,6 +10,8 @@ namespace Spryker\Zed\CompanyRole;
 use Generated\Shared\Transfer\CompanyRoleTransfer;
 use Generated\Shared\Transfer\PermissionCollectionTransfer;
 use Generated\Shared\Transfer\PermissionTransfer;
+use Orm\Zed\Company\Persistence\Map\SpyCompanyTableMap;
+use Orm\Zed\CompanyRole\Persistence\Map\SpyCompanyRoleTableMap;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class CompanyRoleConfig extends AbstractBundleConfig
@@ -18,6 +20,12 @@ class CompanyRoleConfig extends AbstractBundleConfig
      * @var string
      */
     protected const DEFAULT_ADMIN_ROLE_NAME = 'Administrator';
+
+    protected const string SORT_FIELD_NAME = 'name';
+
+    protected const string SORT_FIELD_COMPANY_NAME = 'companyName';
+
+    protected const string SORT_FIELD_IS_DEFAULT = 'isDefault';
 
     /**
      * @api
@@ -78,5 +86,26 @@ class CompanyRoleConfig extends AbstractBundleConfig
         }
 
         return $permissions;
+    }
+
+    /**
+     * Specification:
+     * - Returns the map of sortable company role collection field names to their database columns.
+     * - The keys are the field names a consumer may sort by; the values reach an SQL `ORDER BY`
+     *   clause, so a field outside this map is never passed through.
+     * - Mirrors the columns the Back Office company role table allows sorting by, minus the role
+     *   id, which is internal and not exposed outside the Back Office.
+     *
+     * @api
+     *
+     * @return array<string, string>
+     */
+    public function getCompanyRoleCollectionSortableFieldMap(): array
+    {
+        return [
+            static::SORT_FIELD_NAME => SpyCompanyRoleTableMap::COL_NAME,
+            static::SORT_FIELD_COMPANY_NAME => SpyCompanyTableMap::COL_NAME,
+            static::SORT_FIELD_IS_DEFAULT => SpyCompanyRoleTableMap::COL_IS_DEFAULT,
+        ];
     }
 }

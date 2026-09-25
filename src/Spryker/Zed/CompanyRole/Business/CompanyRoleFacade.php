@@ -8,6 +8,7 @@
 namespace Spryker\Zed\CompanyRole\Business;
 
 use Generated\Shared\Transfer\CompanyResponseTransfer;
+use Generated\Shared\Transfer\CompanyRoleCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CompanyRoleCollectionTransfer;
 use Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CompanyRoleResponseTransfer;
@@ -53,6 +54,22 @@ class CompanyRoleFacade extends AbstractFacade implements CompanyRoleFacadeInter
         return $this->getFactory()
             ->createCompanyRole()
             ->create($companyRoleTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
+     */
+    public function createCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
+    {
+        return $this->getFactory()
+            ->createCompanyRole()
+            ->createCompanyRole($companyRoleTransfer);
     }
 
     /**
@@ -311,5 +328,37 @@ class CompanyRoleFacade extends AbstractFacade implements CompanyRoleFacadeInter
     public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array
     {
         return $this->getRepository()->getCompanyRoleNamesGroupedByCompanyUserIds($companyUserIds);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyRoleCollectionCriteriaTransfer $companyRoleCollectionCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
+     */
+    public function getCompanyRoleCollectionByCollectionCriteria(
+        CompanyRoleCollectionCriteriaTransfer $companyRoleCollectionCriteriaTransfer
+    ): CompanyRoleCollectionTransfer {
+        return $this->getRepository()
+            ->getCompanyRoleCollectionByCollectionCriteria($companyRoleCollectionCriteriaTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
+     */
+    public function updateCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
+    {
+        return $this->getFactory()
+            ->createCompanyRole()
+            ->updateCompanyRole($companyRoleTransfer);
     }
 }

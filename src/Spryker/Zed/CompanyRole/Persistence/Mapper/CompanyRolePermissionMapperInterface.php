@@ -8,7 +8,10 @@
 namespace Spryker\Zed\CompanyRole\Persistence\Mapper;
 
 use Generated\Shared\Transfer\CompanyRoleTransfer;
+use Generated\Shared\Transfer\PermissionCollectionTransfer;
+use Generated\Shared\Transfer\PermissionTransfer;
 use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
+use Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToPermission;
 
 interface CompanyRolePermissionMapperInterface
 {
@@ -16,4 +19,17 @@ interface CompanyRolePermissionMapperInterface
         SpyCompanyRole $spyCompanyRole,
         CompanyRoleTransfer $companyRoleTransfer
     ): CompanyRoleTransfer;
+
+    /**
+     * @param iterable<\Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToPermission> $companyRoleToPermissionEntities
+     */
+    public function mapCompanyRoleToPermissionEntitiesToPermissionCollectionTransfer(
+        iterable $companyRoleToPermissionEntities,
+        PermissionCollectionTransfer $permissionCollectionTransfer
+    ): PermissionCollectionTransfer;
+
+    public function mapCompanyRoleToPermissionEntityToPermissionTransfer(
+        SpyCompanyRoleToPermission $companyRoleToPermissionEntity,
+        PermissionTransfer $permissionTransfer
+    ): PermissionTransfer;
 }

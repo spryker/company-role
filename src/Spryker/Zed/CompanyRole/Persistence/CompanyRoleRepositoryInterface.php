@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\CompanyRole\Persistence;
 
+use Generated\Shared\Transfer\CompanyRoleCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CompanyRoleCollectionTransfer;
 use Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CompanyRoleTransfer;
@@ -58,6 +59,16 @@ interface CompanyRoleRepositoryInterface
      * @return array<int, list<string>>
      */
     public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array;
+
+    public function getCompanyRoleCollectionByCollectionCriteria(
+        CompanyRoleCollectionCriteriaTransfer $companyRoleCollectionCriteriaTransfer
+    ): CompanyRoleCollectionTransfer;
+
+    public function existsCompanyRoleByNameAndIdCompany(
+        string $name,
+        int $idCompany,
+        ?int $excludedIdCompanyRole = null
+    ): bool;
 
     /**
      * @param list<int> $companyRoleIds

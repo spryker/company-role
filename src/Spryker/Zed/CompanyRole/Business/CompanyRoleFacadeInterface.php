@@ -8,6 +8,7 @@
 namespace Spryker\Zed\CompanyRole\Business;
 
 use Generated\Shared\Transfer\CompanyResponseTransfer;
+use Generated\Shared\Transfer\CompanyRoleCollectionCriteriaTransfer;
 use Generated\Shared\Transfer\CompanyRoleCollectionTransfer;
 use Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CompanyRoleResponseTransfer;
@@ -34,6 +35,27 @@ interface CompanyRoleFacadeInterface
      * Specification:
      * - Creates a company role
      * - Creates company role permission relations
+     * - Demotes the company's previous default role when `CompanyRoleTransfer.isDefault` is set
+     * - Persists the company role without validating it; use {@link createCompanyRole()} to have the name, the company and the requested permissions checked before the write
+     *
+     * @api
+     *
+     * @deprecated Use {@link createCompanyRole()} instead, which validates the company role before persisting it.
+     *
+     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
+     */
+    public function create(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
+
+    /**
+     * Specification:
+     * - Creates a company role
+     * - Creates company role permission relations
+     * - Returns an unsuccessful response when the name is missing, longer than the column allows or
+     *   already used by another role of the same company, when the company is missing, or when a
+     *   requested permission is not known to this installation
+     * - Demotes the company's previous default role when `CompanyRoleTransfer.isDefault` is set
      *
      * @api
      *
@@ -41,7 +63,7 @@ interface CompanyRoleFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
      */
-    public function create(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
+    public function createCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 
     /**
      * Specification:
@@ -63,8 +85,12 @@ interface CompanyRoleFacadeInterface
      * - Updates fields in a company role entity
      * - Finds/creates/updates permissions according CompanyRoleTransfer::permissionCollection and updates
      * configuration in them
+     * - Silently does nothing when the update is rejected; use {@link updateCompanyRole()} to read
+     * the validation result
      *
      * @api
+     *
+     * @deprecated Use {@link updateCompanyRole()} instead, which reports whether the update succeeded.
      *
      * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
      *
@@ -76,6 +102,8 @@ interface CompanyRoleFacadeInterface
      * Specification:
      * - Finds a company role by CompanyRoleTransfer::idCompanyRole
      * - Deletes the company role
+     * - Returns an unsuccessful response when the company role does not exist, when it is the
+     *   company's default role, or when company users are still assigned to it
      *
      * @api
      *
@@ -180,6 +208,10 @@ interface CompanyRoleFacadeInterface
      *
      * @api
      *
+     * @deprecated Use {@link getCompanyRoleCollectionByCollectionCriteria()} instead, which takes a
+     * `CompanyRoleCollectionCriteriaTransfer`, memoizes nothing and loads the permissions of a whole
+     * page in one query.
+     *
      * @param \Generated\Shared\Transfer\CompanyRoleCriteriaFilterTransfer $criteriaFilterTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
@@ -264,4 +296,58 @@ interface CompanyRoleFacadeInterface
      * @return array<int, list<string>>
      */
     public function getCompanyRoleNamesGroupedByCompanyUserIds(array $companyUserIds): array;
+
+    /**
+     * Specification:
+     * - Retrieves a company role collection filtered by `CompanyRoleConditionsTransfer`.
+     * - Filters by company role uuids when `CompanyRoleConditionsTransfer.companyRoleUuids` is set.
+     * - Filters by company uuids when `CompanyRoleConditionsTransfer.companyUuids` is set.
+     * - Filters by company ids when `CompanyRoleConditionsTransfer.companyIds` is set.
+     * - Filters by the company users a role is assigned to when
+     *   `CompanyRoleConditionsTransfer.companyUserIds` is set.
+     * - Filters by the default flag when `CompanyRoleConditionsTransfer.isDefault` is set.
+     * - Matches the role name partially when `CompanyRoleConditionsTransfer.name` is set.
+     * - Matches the company name partially when `CompanyRoleConditionsTransfer.companyName` is set.
+     * - Matches the role name or the company name partially, OR-combined, when
+     *   `CompanyRoleConditionsTransfer.searchTerm` is set.
+     * - Sorts by the fields in `CompanyRoleCollectionCriteriaTransfer.sortCollection`, each resolved
+     *   through `CompanyRoleConfig::getCompanyRoleCollectionSortableFieldMap()`; an unmapped field is
+     *   ignored. The company role id always breaks a tie, so the order is total.
+     * - Applies `CompanyRoleCollectionCriteriaTransfer.pagination` as a limit/offset window and
+     *   returns the total number of results on `CompanyRoleCollectionTransfer.pagination.nbResults`.
+     * - Hydrates every role with its permissions and its company.
+     * - Hydrates every role with its company users and their customers when
+     *   `CompanyRoleConditionsTransfer.withCompanyUsers` is set. Hydration is opt-in because it is
+     *   not part of every consumer's contract; when requested, the whole page is loaded in one
+     *   query rather than one query per role.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyRoleCollectionCriteriaTransfer $companyRoleCollectionCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleCollectionTransfer
+     */
+    public function getCompanyRoleCollectionByCollectionCriteria(
+        CompanyRoleCollectionCriteriaTransfer $companyRoleCollectionCriteriaTransfer
+    ): CompanyRoleCollectionTransfer;
+
+    /**
+     * Specification:
+     * - Updates the company role identified by `CompanyRoleTransfer.idCompanyRole`.
+     * - Returns an unsuccessful response when the role does not exist, its name is missing, longer
+     *   than the column allows or already used by another role of the same company, its company
+     *   differs from the stored one, the default flag is being cleared while the role holds it, or a
+     *   requested permission is not known to this installation.
+     * - Updates only the fields the transfer carries.
+     * - Replaces the role's permissions with `CompanyRoleTransfer.permissionCollection`; a transfer
+     *   carrying no permission collection therefore detaches every permission.
+     * - Executes `CompanyRolePostSavePluginInterface` plugins on success.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyRoleTransfer $companyRoleTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyRoleResponseTransfer
+     */
+    public function updateCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer;
 }

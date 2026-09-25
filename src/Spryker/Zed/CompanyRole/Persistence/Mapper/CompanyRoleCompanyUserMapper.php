@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\CompanyUserCollectionTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
+use Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToCompanyUser;
 
 class CompanyRoleCompanyUserMapper implements CompanyRoleCompanyUserMapperInterface
 {
@@ -43,5 +44,44 @@ class CompanyRoleCompanyUserMapper implements CompanyRoleCompanyUserMapperInterf
         $companyRoleTransfer->setCompanyUserCollection($companyUserCollectionTransfer);
 
         return $companyRoleTransfer;
+    }
+
+    /**
+     * @param iterable<\Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToCompanyUser> $companyRoleToCompanyUserEntities
+     */
+    public function mapCompanyRoleToCompanyUserEntitiesToCompanyUserCollectionTransfer(
+        iterable $companyRoleToCompanyUserEntities,
+        CompanyUserCollectionTransfer $companyUserCollectionTransfer
+    ): CompanyUserCollectionTransfer {
+        foreach ($companyRoleToCompanyUserEntities as $companyRoleToCompanyUserEntity) {
+            $companyUserTransfer = $this->mapCompanyRoleToCompanyUserEntityToCompanyUserTransfer(
+                $companyRoleToCompanyUserEntity,
+                new CompanyUserTransfer(),
+            );
+
+            if ($companyUserTransfer !== null) {
+                $companyUserCollectionTransfer->addCompanyUser($companyUserTransfer);
+            }
+        }
+
+        return $companyUserCollectionTransfer;
+    }
+
+    public function mapCompanyRoleToCompanyUserEntityToCompanyUserTransfer(
+        SpyCompanyRoleToCompanyUser $companyRoleToCompanyUserEntity,
+        CompanyUserTransfer $companyUserTransfer
+    ): ?CompanyUserTransfer {
+        /** @var \Orm\Zed\Customer\Persistence\SpyCustomer|null $customerEntity */
+        $customerEntity = $companyRoleToCompanyUserEntity->getCompanyUser()->getCustomer();
+
+        if ($customerEntity === null) {
+            return null;
+        }
+
+        $companyUserTransfer->fromArray($companyRoleToCompanyUserEntity->getCompanyUser()->toArray(), true);
+
+        return $companyUserTransfer->setCustomer(
+            (new CustomerTransfer())->fromArray($customerEntity->toArray(), true),
+        );
     }
 }

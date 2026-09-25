@@ -27,6 +27,7 @@
 
     <transfer name="Company">
         <property name="idCompany" type="int"/>
+        <property name="uuid" type="string"/>
         <property name="name" type="string"/>
         <property name="isActive" type="bool"/>
         <property name="status" type="string"/>
@@ -48,6 +49,8 @@
     </transfer>
 
     <transfer name="Pagination">
+        <property name="limit" type="int"/>
+        <property name="offset" type="int"/>
         <property name="page" type="int"/>
         <property name="maxPerPage" type="int"/>
         <property name="nbResults" type="int"/>
@@ -106,5 +109,27 @@
     </transfer>
 
     <transfer name="StoreRelation">
+    </transfer>
+    <transfer name="CompanyRoleCollectionCriteria" strict="true">
+        <property name="companyRoleConditions" type="CompanyRoleConditions"/>
+        <property name="sortCollection" type="Sort[]" singular="sort"/>
+        <property name="pagination" type="Pagination"/>
+    </transfer>
+
+    <transfer name="CompanyRoleConditions" strict="true">
+        <property name="companyRoleUuids" type="string[]" singular="companyRoleUuid"/>
+        <property name="companyUuids" type="string[]" singular="companyUuid"/>
+        <property name="companyIds" type="int[]" singular="companyId"/>
+        <property name="companyUserIds" type="int[]" singular="companyUserId"/>
+        <property name="withCompanyUsers" type="bool"/>
+        <property name="isDefault" type="bool"/>
+        <property name="name" type="string"/>
+        <property name="companyName" type="string"/>
+        <property name="searchTerm" type="string"/>
+    </transfer>
+
+    <transfer name="Sort">
+        <property name="field" type="string"/>
+        <property name="isAscending" type="bool"/>
     </transfer>
 </transfers>

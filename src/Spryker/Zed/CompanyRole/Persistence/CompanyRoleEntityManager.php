@@ -27,7 +27,7 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
             ->mapCompanyRoleTransferToEntity($companyRoleTransfer, new SpyCompanyRole());
 
         if ($spyCompanyRole->getIsDefault()) {
-            $this->cleanupCompanyDefaultRoles($spyCompanyRole);
+            $this->cleanupCompanyDefaultRoles($spyCompanyRole, $companyRoleTransfer->getFkCompany());
         }
 
         $spyCompanyRole->save();
@@ -125,16 +125,39 @@ class CompanyRoleEntityManager extends AbstractEntityManager implements CompanyR
         $spyCompanyRoleToPermission->save();
     }
 
-    protected function cleanupCompanyDefaultRoles(SpyCompanyRole $spyCompanyRole): void
+    protected function cleanupCompanyDefaultRoles(SpyCompanyRole $spyCompanyRole, ?int $idCompany = null): void
     {
+        $idCompany = $idCompany
+            ?: $spyCompanyRole->getFkCompany()
+            ?: $this->findIdCompanyByIdCompanyRole($spyCompanyRole->getIdCompanyRole());
+
+        if (!$idCompany) {
+            return;
+        }
+
         $updateQuery = $this->getFactory()
             ->createCompanyRoleQuery()
-            ->filterByFkCompany($spyCompanyRole->getFkCompany());
+            ->filterByFkCompany($idCompany);
 
-        if ($spyCompanyRole->getIdCompanyRole() !== null) {
-            $updateQuery->filterByIdCompanyRole($spyCompanyRole->getIdCompanyRole(), Criteria::NOT_EQUAL);
+        $idCompanyRole = $spyCompanyRole->getIdCompanyRole();
+
+        if ($idCompanyRole) {
+            $updateQuery->filterByIdCompanyRole($idCompanyRole, Criteria::NOT_EQUAL);
         }
 
         $updateQuery->update(['IsDefault' => false]);
+    }
+
+    protected function findIdCompanyByIdCompanyRole(?int $idCompanyRole): ?int
+    {
+        if (!$idCompanyRole) {
+            return null;
+        }
+
+        return $this->getFactory()
+            ->createCompanyRoleQuery()
+            ->filterByIdCompanyRole($idCompanyRole)
+            ->findOne()
+            ?->getFkCompany();
     }
 }

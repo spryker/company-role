@@ -14,7 +14,7 @@ use Generated\Shared\Transfer\CompanyRoleTransfer;
 use Generated\Shared\Transfer\CompanyTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\PermissionCollectionTransfer;
-use Generated\Shared\Transfer\ResponseMessageTransfer;
+use Spryker\Zed\CompanyRole\Business\Validator\CompanyRoleValidatorInterface;
 use Spryker\Zed\CompanyRole\CompanyRoleConfig;
 use Spryker\Zed\CompanyRole\Dependency\Facade\CompanyRoleToPermissionFacadeInterface;
 use Spryker\Zed\CompanyRole\Persistence\CompanyRoleEntityManagerInterface;
@@ -24,11 +24,6 @@ use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
 class CompanyRole implements CompanyRoleInterface
 {
     use TransactionTrait;
-
-    /**
-     * @var string
-     */
-    protected const ERROR_MESSAGE_HAS_RELATED_USERS = 'company.company_role.delete.error.has_users';
 
     /**
      * @param \Spryker\Zed\CompanyRole\Persistence\CompanyRoleRepositoryInterface $repository
@@ -44,12 +39,26 @@ class CompanyRole implements CompanyRoleInterface
         protected CompanyRolePermissionWriterInterface $permissionWriter,
         protected CompanyRoleConfig $companyRoleConfig,
         protected CompanyRoleToPermissionFacadeInterface $permissionFacade,
+        protected CompanyRoleValidatorInterface $companyRoleValidator,
         protected array $companyRolePostSavePlugins
     ) {
     }
 
     public function create(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
+        return $this->getTransactionHandler()->handleTransaction(function () use ($companyRoleTransfer) {
+            return $this->executeCompanyRoleSaveTransaction($companyRoleTransfer);
+        });
+    }
+
+    public function createCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
+    {
+        $companyRoleResponseTransfer = $this->companyRoleValidator->validateCreate($companyRoleTransfer);
+
+        if ($companyRoleResponseTransfer !== null) {
+            return $companyRoleResponseTransfer;
+        }
+
         return $this->getTransactionHandler()->handleTransaction(function () use ($companyRoleTransfer) {
             return $this->executeCompanyRoleSaveTransaction($companyRoleTransfer);
         });
@@ -149,6 +158,19 @@ class CompanyRole implements CompanyRoleInterface
         });
     }
 
+    public function updateCompanyRole(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
+    {
+        $companyRoleResponseTransfer = $this->companyRoleValidator->validateUpdate($companyRoleTransfer);
+
+        if ($companyRoleResponseTransfer !== null) {
+            return $companyRoleResponseTransfer;
+        }
+
+        return $this->getTransactionHandler()->handleTransaction(function () use ($companyRoleTransfer) {
+            return $this->executeCompanyRoleSaveTransaction($companyRoleTransfer);
+        });
+    }
+
     public function delete(CompanyRoleTransfer $companyRoleTransfer): CompanyRoleResponseTransfer
     {
         $companyRoleResponseTransfer = (new CompanyRoleResponseTransfer())
@@ -180,43 +202,17 @@ class CompanyRole implements CompanyRoleInterface
 
     protected function executeDeleteTransaction(CompanyRoleResponseTransfer $companyRoleResponseTransfer): CompanyRoleResponseTransfer
     {
-        $companyRoleResponseTransfer
-            ->getCompanyRoleTransfer()
+        $companyRoleTransfer = $companyRoleResponseTransfer
+            ->getCompanyRoleTransferOrFail()
             ->requireIdCompanyRole();
 
-        $companyRoleResponseTransfer = $this->checkOnRelatedUsers($companyRoleResponseTransfer);
+        $validationCompanyRoleResponseTransfer = $this->companyRoleValidator->validateDelete($companyRoleTransfer);
 
-        if (!$companyRoleResponseTransfer->getIsSuccessful()) {
-            return $companyRoleResponseTransfer;
+        if ($validationCompanyRoleResponseTransfer !== null) {
+            return $validationCompanyRoleResponseTransfer;
         }
 
-        $this->entityManager->deleteCompanyRoleById(
-            $companyRoleResponseTransfer
-                ->getCompanyRoleTransfer()
-                ->getIdCompanyRole(),
-        );
-
-        return $companyRoleResponseTransfer;
-    }
-
-    protected function checkOnRelatedUsers(CompanyRoleResponseTransfer $companyRoleResponseTransfer): CompanyRoleResponseTransfer
-    {
-        $hasUsers = $this->repository->hasUsers(
-            $companyRoleResponseTransfer
-                ->getCompanyRoleTransfer()
-                ->getIdCompanyRole(),
-        );
-
-        if ($hasUsers) {
-            $companyRoleResponseTransfer
-                ->setIsSuccessful(false)
-                ->addMessage(
-                    (new ResponseMessageTransfer())
-                        ->setText(static::ERROR_MESSAGE_HAS_RELATED_USERS),
-                );
-
-            return $companyRoleResponseTransfer;
-        }
+        $this->entityManager->deleteCompanyRoleById($companyRoleTransfer->getIdCompanyRoleOrFail());
 
         return $companyRoleResponseTransfer;
     }

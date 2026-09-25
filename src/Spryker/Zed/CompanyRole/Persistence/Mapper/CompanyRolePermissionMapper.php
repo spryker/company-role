@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\CompanyRoleTransfer;
 use Generated\Shared\Transfer\PermissionCollectionTransfer;
 use Generated\Shared\Transfer\PermissionTransfer;
 use Orm\Zed\CompanyRole\Persistence\SpyCompanyRole;
+use Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToPermission;
 
 class CompanyRolePermissionMapper implements CompanyRolePermissionMapperInterface
 {
@@ -18,19 +19,59 @@ class CompanyRolePermissionMapper implements CompanyRolePermissionMapperInterfac
         SpyCompanyRole $spyCompanyRole,
         CompanyRoleTransfer $companyRoleTransfer
     ): CompanyRoleTransfer {
-        $permissionCollectionTransfer = new PermissionCollectionTransfer();
+        return $companyRoleTransfer->setPermissionCollection(
+            $this->mapCompanyRoleToPermissionEntitiesToPermissionCollectionTransfer(
+                $spyCompanyRole->getSpyCompanyRoleToPermissionsJoinPermission(),
+                new PermissionCollectionTransfer(),
+            ),
+        );
+    }
 
-        foreach ($spyCompanyRole->getSpyCompanyRoleToPermissionsJoinPermission() as $spyCompanyRoleToPermission) {
-            $permissionTransfer = (new PermissionTransfer())
-                ->setIdPermission($spyCompanyRoleToPermission->getFkPermission())
-                ->setConfiguration(json_decode($spyCompanyRoleToPermission->getConfiguration(), true))
-                ->setKey($spyCompanyRoleToPermission->getPermission()->getKey());
-
-            $permissionCollectionTransfer->addPermission($permissionTransfer);
+    /**
+     * @param iterable<\Orm\Zed\CompanyRole\Persistence\SpyCompanyRoleToPermission> $companyRoleToPermissionEntities
+     */
+    public function mapCompanyRoleToPermissionEntitiesToPermissionCollectionTransfer(
+        iterable $companyRoleToPermissionEntities,
+        PermissionCollectionTransfer $permissionCollectionTransfer
+    ): PermissionCollectionTransfer {
+        foreach ($companyRoleToPermissionEntities as $companyRoleToPermissionEntity) {
+            $permissionCollectionTransfer->addPermission(
+                $this->mapCompanyRoleToPermissionEntityToPermissionTransfer(
+                    $companyRoleToPermissionEntity,
+                    new PermissionTransfer(),
+                ),
+            );
         }
 
-        $companyRoleTransfer->setPermissionCollection($permissionCollectionTransfer);
+        return $permissionCollectionTransfer;
+    }
 
-        return $companyRoleTransfer;
+    public function mapCompanyRoleToPermissionEntityToPermissionTransfer(
+        SpyCompanyRoleToPermission $companyRoleToPermissionEntity,
+        PermissionTransfer $permissionTransfer
+    ): PermissionTransfer {
+        $permissionEntity = $companyRoleToPermissionEntity->getPermission();
+
+        $permissionTransfer
+        ->setIdPermission($companyRoleToPermissionEntity->getFkPermission())
+        ->setConfiguration($this->decodeJson($companyRoleToPermissionEntity->getConfiguration()))
+        ->setConfigurationSignature($this->decodeJson($permissionEntity->getConfigurationSignature()))
+        ->setKey($permissionEntity->getKey());
+
+        return $permissionTransfer;
+    }
+
+    /**
+     * @return array<mixed>|null
+     */
+    protected function decodeJson(?string $value): ?array
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $decodedValue = json_decode($value, true);
+
+        return is_array($decodedValue) ? $decodedValue : null;
     }
 }
