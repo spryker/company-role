@@ -106,6 +106,7 @@
     <transfer name="CompanyUserResponse">
         <property name="companyUser" type="CompanyUser"/>
         <property name="isSuccessful" type="bool"/>
+        <property name="messages" type="ResponseMessage[]" singular="message"/>
     </transfer>
 
     <transfer name="StoreRelation">
